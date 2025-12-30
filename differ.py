@@ -60,7 +60,6 @@ def main():
 
     # =====================
     # previous を更新
-    shutil.copy2(LATEST, PREVIOUS)
 
     # notify.py 用（変更あり）
     sys.exit(2)
