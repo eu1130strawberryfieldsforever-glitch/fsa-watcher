@@ -2,7 +2,7 @@ name: Financial Authority Watcher
 
 on:
   schedule:
-    - cron: '0 0 * * *' # 日本時間の朝9:00（世界標準時の0:00）
+    - cron: '10 0 * * *' # 日本時間の朝9:00（世界標準時の0:00）
   workflow_dispatch:   # ボタンを押して好きな時に実行できる設定
 
 jobs:
