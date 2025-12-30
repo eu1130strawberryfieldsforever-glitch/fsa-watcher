@@ -1,6 +1,5 @@
 import requests
 import os
-import pandas as pd  # ← テスト用にこれを追加
 
 DATA_DIR = "data"
 LATEST_XLSX = os.path.join(DATA_DIR, "latest.xlsx")
@@ -14,11 +13,4 @@ r.raise_for_status()
 with open(LATEST_XLSX, "wb") as f:
     f.write(r.content)
 
-# ===== ここからテスト用コード =====
-# せっかく保存したファイルを、わざと全然違う内容で上書きします
-df_test = pd.DataFrame({"テスト": ["通知テストです", "データが変わりました"]})
-df_test.to_excel(LATEST_XLSX, index=False)
-# ===============================
-
-print("Excel saved (with test data)")
-
+print("Excel saved")
