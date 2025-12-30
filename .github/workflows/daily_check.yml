@@ -1,0 +1,39 @@
+name: Financial Authority Watcher
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # 日本時間の朝9:00（世界標準時の0:00）
+  workflow_dispatch:   # ボタンを押して好きな時に実行できる設定
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install pandas requests openpyxl
+
+      - name: Run monitoring script
+        env:
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+        run: |
+          # notify.pyの中でscrapeやdifferを呼ぶ今の構成を実行
+          python notify.py
+
+      - name: Save changes
+        # 変更があった場合（previous.xlsxが更新された場合）のみ、GitHubに保存する
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/previous.xlsx
+          git commit -m "Update previous data" || echo "No changes to commit"
+          git push
